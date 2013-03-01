@@ -1,6 +1,7 @@
 #ifndef _ROPWINDOW_H_
 #define _ROPWINDOW_H_
 #include "stdafx.h"
+#include "AlphaChild.h"
 class RopWindow : public CWindowImpl<RopWindow>
 {
 public:
@@ -13,8 +14,11 @@ public:
 		MESSAGE_HANDLER(WM_DESTROY,OnDes)
 		MESSAGE_HANDLER(WM_ERASEBKGND,OnErs)
 		MESSAGE_HANDLER(WM_KEYDOWN,OnChar)
+		CHAIN_MSG_MAP_ALT_MEMBER( mAlpha, 1 )
+		 REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 
+	/*
 	void CaptureImg()
 	{
 		HDC hdcScreen;
@@ -156,6 +160,7 @@ done:
 		::ReleaseDC(m_hWnd,hdcWindow);
 	}
 
+*/
 
 	LRESULT OnCreate(UINT umsg,WPARAM wParam, LPARAM lParam,BOOL&bHandled)
 	{
@@ -166,11 +171,11 @@ done:
 		int cx = GetSystemMetrics(SM_CXSCREEN);
 		int cy = GetSystemMetrics(SM_CYSCREEN);
 
-		SetWindowPos(HWND_TOPMOST,0,0,cx,cy,SWP_NOREDRAW);
+		//SetWindowPos(HWND_TOPMOST,0,0,cx,cy,SWP_NOREDRAW);
+		MoveWindow(CRect(0,0,cx,cy));
+		ModifyStyle(WS_VISIBLE |~WS_CAPTION | ~WS_BORDER/* WS_BORDER| WS_CAPTION*/ /*| WS_CLIPSIBLINGS*/ /*| WS_CLIPCHILDREN*/, 0);
 
-		ModifyStyle(WS_VISIBLE  | WS_POPUP |~WS_CAPTION | ~WS_BORDER/* WS_BORDER| WS_CAPTION*/ /*| WS_CLIPSIBLINGS*/ /*| WS_CLIPCHILDREN*/, 0);
-
-		SetWindowPos( 0, 0,0, cx,cy, SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
+		//SetWindowPos( 0, 0,0, cx,cy, SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
 		CRect rc;
 		GetClientRect(&rc);
 		CPaintDC dc(m_hWnd);
@@ -185,7 +190,7 @@ done:
 
 
 		HDC hScreenDC = ::GetDC(NULL);
-
+#if 0
 		::SetStretchBltMode(mMemDC.m_hDC,HALFTONE);
 
 		mMemDC.StretchBlt(
@@ -194,29 +199,22 @@ done:
 			hScreenDC, 
 			0,0,
 			cx,cy,
-			SRCCOPY);
-		//mMemDC.SelectBitmap(b);
+			SRCCOPY | CAPTUREBLT);
+#endif
+		mMemDC.BitBlt(0,0,rc.Width(),rc.Height(),hScreenDC,0,0,SRCCOPY | CAPTUREBLT);
 
-
-		//CPaintDC dc(m_hWnd);
-		//dc.BitBlt(0,0,rc.Width(),rc.Height(),mMemDC,0,0,SRCCOPY);
+		mAlpha.Create(m_hWnd,CRect(0,0,cx,cy),"",WS_VISIBLE | WS_POPUP);
+		//SetWindowPos(HWND_TOPMOST, 0,0, cx,cy, SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
 		return false;
 	}
 
-	void Display()
-	{
-
-		
-	}
 
 	LRESULT OnPaint(UINT umsg,WPARAM wParam, LPARAM lParam,BOOL&bHandled)
 	{
-		//DisplayII();
 		CRect rc;
 		GetClientRect(&rc);
 		CPaintDC dc(m_hWnd);
-		dc.BitBlt(0,0,rc.Width(),rc.Height(),mMemDC,0,0,SRCCOPY);
-		//dc.AlphaBlend()
+		dc.BitBlt(0,0,rc.Width(),rc.Height(),mMemDC,0,0,SRCCOPY |CAPTUREBLT );
 		return false;
 	}
 
@@ -266,6 +264,8 @@ private:
 
 	CDC mMemDC;
 	CBitmap mBmp;
+
+	AlphaChild mAlpha;
 
 };
 #endif
