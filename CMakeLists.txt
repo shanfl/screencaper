@@ -2,7 +2,7 @@
 project(rop)
 
 set(src 
-Rop.cpp
+ScreenCapture.cpp
 RopWindow.h
 AlphaChild.h
 stdafx.h)

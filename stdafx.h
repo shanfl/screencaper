@@ -17,6 +17,6 @@ extern CAppModule _Module;
 #include <atlwin.h>
 #include <atlmisc.h>
 
-#include <GdiPlus.h>
+//#include <GdiPlus.h>
 
 #endif

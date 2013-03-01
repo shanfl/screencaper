@@ -6,7 +6,7 @@ typedef CWinTraits<WS_POPUPWINDOW, WS_EX_TRANSPARENT | WS_EX_LAYERED | WS_EX_TOP
 class AlphaChild : public CWindowImpl<AlphaChild ,CWindow, CListViewMarqueeTraits>
 {
 public:
-	DECLARE_WND_CLASS_EX(_T("ListViewMarquee"), CS_OWNDC, -1);
+	DECLARE_WND_CLASS_EX(_T("AlphaChild"), CS_OWNDC, -1);
 	BEGIN_MSG_MAP(D)
 		MESSAGE_HANDLER(WM_CREATE,OnCreate)
 		//MESSAGE_HANDLER(WM_PAINT,OnPaint)
