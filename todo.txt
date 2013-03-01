@@ -1,0 +1,76 @@
+1.截图保存
+	BOOL CWinInfoWnd: creenshot(HWND hwnd,const std: tring &saveFileFullName)
+
+{
+	//std: tring
+	//hwnd=::FindWindow(NULL,"WinInfo");
+	 
+	if( !::IsWindow(hwnd) ) return false;
+	if( saveFileFullName.empty() ) return false;
+
+	
+	//获得窗口大小
+	CRect rect;
+	::GetWindowRect(hwnd, &rect);
+
+	CRgn rgn;
+	rgn.CreateRectRgn(0, 0, 0, 0);
+	::GetWindowRgn(hwnd, rgn);
+
+	//截屏这个窗口到一DDB位图中
+	HBITMAP bmp;
+	{
+		LPRECT lpRect = &rect;
+		HRGN hRgnClip = rgn;
+
+		HDC       hScrDC, hMemDC;      
+		HBITMAP    hBitmap, hOldBitmap;   
+		int       nX, nY, nX2, nY2;      
+		int       nWidth, nHeight;
+
+		// 确保选定区域不为空矩形
+		if (IsRectEmpty(lpRect)) return false;
+		//为屏幕创建设备描述表
+		hScrDC = CreateDC("DISPLAY", NULL, NULL, NULL);
+		//hScrDC = GetDC(m_hWnd);
+		hMemDC = CreateCompatibleDC(hScrDC);
+		// 获得选定区域坐标
+		nX = lpRect->left;
+		nY = lpRect->top;
+		nX2 = lpRect->right;
+		nY2 = lpRect->bottom;
+
+		nWidth = nX2 - nX;
+		nHeight = nY2 - nY;
+		hBitmap = CreateCompatibleBitmap(hScrDC, nWidth, nHeight);
+		hOldBitmap = (HBITMAP)SelectObject(hMemDC, hBitmap);
+
+		CRect rc = lpRect;
+	//	rc.OffsetRect(-lpRect->left, -lpRect->top);
+	//	::FillRect(hMemDC, &rc, CBrush(RGB(255, 255, 255)));
+	//	: electClipRgn(hMemDC, hRgnClip);
+
+		BitBlt(hMemDC, 0, 0, nWidth, nHeight,hScrDC, nX, nY, SRCCOPY|CAPTUREBLT);
+		: electClipRgn(hMemDC, NULL);
+
+		(HBITMAP)SelectObject(hMemDC, hOldBitmap);
+		DeleteDC(hScrDC);
+		DeleteDC(hMemDC);
+
+		bmp = hBitmap;
+	}
+
+	//存盘
+	CImage Image ; 
+	Image.Attach(bmp);                         
+	Image.Save(saveFileFullName.c_str());
+
+	Image.Detach();
+	DeleteObject(bmp);
+	return true;
+}
+
+
+2. 截图中间结果可调整
+3. 显示保存地址文本框，让用户选择保存地址。
+4. ui
