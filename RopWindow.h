@@ -6,7 +6,7 @@ class RopWindow : public CWindowImpl<RopWindow>
 {
 public:
 	//using namespace Gdiplus;
-	DECLARE_WND_CLASS("rop widnow")
+	DECLARE_WND_CLASS("ScreenCapture")
 
 	BEGIN_MSG_MAP(theClass)
 		MESSAGE_HANDLER(WM_PAINT,OnPaint)
