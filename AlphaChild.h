@@ -180,11 +180,11 @@ public:
 
 		/*
 			2---------
-			| 1       |
+			|        |
 			|		 |
 			---------1
 		*/
-		else if(ptEnd.x <= ptBeg.x && ptEnd.y >= ptBeg.y)
+		else if(ptEnd.x <= ptBeg.x && ptEnd.y <= ptBeg.y)
 		{
 			RECT rc = {ptEnd.x,ptEnd.y,ptBeg.x,ptBeg.y};
 			return rc;
@@ -196,7 +196,7 @@ public:
 			|		 |
 			1---------
 		*/			
-		else if(ptEnd.x >= ptBeg.x && ptEnd.y >= ptBeg.y)
+		else if(ptEnd.x >= ptBeg.x && ptEnd.y <= ptBeg.y)
 		{
 			RECT rc = {ptBeg.x,ptEnd.y,ptEnd.x,ptBeg.y};
 			return rc;
