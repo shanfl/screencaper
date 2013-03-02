@@ -5,6 +5,16 @@ typedef CWinTraits<WS_POPUPWINDOW, WS_EX_TRANSPARENT | WS_EX_LAYERED | WS_EX_TOP
 
 class AlphaChild : public CWindowImpl<AlphaChild ,CWindow, CListViewMarqueeTraits>
 {
+	// ½ØÆÁ×´Ì¬
+	// 1.Ñ¡ÔñÇøÓò£¨Ñ¡Ôñ×´Ì¬£©				----- ÔÚ²»ÊÇ±à¼­×´Ì¬ÏÂ£¬Êó±ê×ó¼ü°´ÏÂ
+	// 2.Ñ¡ÔñÍê±Ï£¬±à¼­ÇøÓò£¨±à¼­×´Ì¬£©	----- Êó±êÓÒ¼ü
+	// 3.È·¶¨
+	enum eSTATUS
+	{
+		SELECT_STATUS,
+		EDIT_STATSUS,
+	};
+
 public:
 	DECLARE_WND_CLASS_EX(_T("AlphaChild"), CS_OWNDC, -1);
 	BEGIN_MSG_MAP(D)
@@ -111,7 +121,9 @@ public:
 			dc.FillRect(&rc,brush);
 
 			RECT rc2 = {100,100,400,400};
-			dc.Rectangle(mPtBeg.x,mPtBeg.y,mPtEnd.x,mPtEnd.y);
+			RECT rcGet = Convert(mPtBeg,mPtEnd);
+			//dc.Rectangle(mPtBeg.x,mPtBeg.y,mPtEnd.x,mPtEnd.y);
+			dc.Rectangle(&rcGet);
 #endif
 #endif
 		}
@@ -120,10 +132,8 @@ public:
 
 	LRESULT OnLMouseBtnDwn(UINT umsg,WPARAM wParam, LPARAM lParam,BOOL&bHandled)
 	{
-		//SetFocus();
 		mbLMouseDown = true;
 		GetCursorPos(&mPtBeg);
-		//SetCapture();
 		return 1 ;
 	}
 
@@ -131,7 +141,7 @@ public:
 	{
 		mbLMouseDown = FALSE;
 		GetCursorPos(&mPtEnd);
-		//ReleaseCapture();
+		//RECT rc = Convert(mPtBeg,mPtBeg)
 		return 1 ;
 	}
 
@@ -139,6 +149,58 @@ public:
 	void DrawRec(POINT begin,POINT end)
 	{
 
+	}
+
+
+	RECT Convert(POINT ptBeg,POINT ptEnd)
+	{
+		/*
+			1--------
+			|        |
+			|		 |
+			---------2
+		*/
+		if(ptEnd.x >= ptBeg.x && ptEnd.y >= ptBeg.y)
+		{
+			RECT rc = {ptBeg.x,ptBeg.y,ptEnd.x,ptEnd.y};
+			return rc;
+		}
+
+		/*
+			---------1
+			|        |
+			|		 |
+			2---------
+		*/
+		else if(ptEnd.x <= ptBeg.x && ptEnd.y >= ptBeg.y)
+		{
+			RECT rc = {ptEnd.x,ptBeg.y,ptBeg.x,ptEnd.y};
+			return rc;
+		}
+
+		/*
+			2---------
+			| 1       |
+			|		 |
+			---------1
+		*/
+		else if(ptEnd.x <= ptBeg.x && ptEnd.y >= ptBeg.y)
+		{
+			RECT rc = {ptEnd.x,ptEnd.y,ptBeg.x,ptBeg.y};
+			return rc;
+		}
+
+		/*
+			---------2
+			|        |
+			|		 |
+			1---------
+		*/			
+		else if(ptEnd.x >= ptBeg.x && ptEnd.y >= ptBeg.y)
+		{
+			RECT rc = {ptBeg.x,ptEnd.y,ptEnd.x,ptBeg.y};
+			return rc;
+		}			
 	}
 
 
