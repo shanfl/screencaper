@@ -8,6 +8,8 @@
 #define _WIN32_IE         0x0600
 #define _RICHEDIT_VER     0x0100
 
+#define MSG_USER_SCREEN   (WM_USER + 10001)
+
 #include <atlbase.h>
 #include <atlapp.h>
 
@@ -15,7 +17,9 @@ extern CAppModule _Module;
 
 
 #include <atlwin.h>
-#include <atlmisc.h>
+#include <atlctrls.h>
+//#include <atlmisc.h>
+#include "atlimage.h"
 
 //#include <GdiPlus.h>
 
