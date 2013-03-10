@@ -73,32 +73,6 @@ public:
 		return false;
 	}
 
-	LRESULT OnPaint(UINT uMsg,WPARAM wParam, LPARAM lParam,BOOL &bHandled)
-	{
-
-#if 1
-		RECT rc,rcTxt = {0,0,100,100};
-		CPaintDC dc = m_hWnd;
-		dc.SetBkMode(TRANSPARENT);
-		//dc.SetROP2(R2_NOT);
-		//dc.DrawText("Hello World!",strlen("Hello World!"),&rcTxt,0);
-
-#if 1
-
-		COLORREF backgndcolor = RGB(0,0,0);
-		CBrush brush;
-		brush.CreateSolidBrush(backgndcolor);
-		GetClientRect(&rc);
-		dc.FillRect(&rc,brush);
-
-		//RECT rc2 = {100,100,400,400};
-		//dc.Rectangle(&rc2);
-		dc.Rectangle(mPtBeg.x,mPtBeg.y,mPtEnd.x,mPtEnd.y);
-#endif
-#endif
-		return false;
-	}
-
 	LRESULT OnErs(UINT umsg,WPARAM wParam, LPARAM lParam,BOOL&bHandled)
 	{
 		return 1 ;
@@ -108,6 +82,8 @@ public:
 	{
 		RECT rc,rcTxt = {0,0,100,100};
 		CPaintDC dc = m_hWnd;
+
+
 		//dc.SetBkMode(TRANSPARENT);
 		//dc.SetROP2(R2_NOT);
 
@@ -166,7 +142,6 @@ public:
 				mPtBeg.y = mPtEnd.y = 0;
 				DrawRec();
 				UpateControls();
-				//RedrawWindow();
 			}
 		}
 		return 1 ;
@@ -183,7 +158,6 @@ public:
 		}
 		else
 		{
-			//GetCursorPos(&mPtEnd);
 			meStatus = SELECT_STATUS;
 		}
 			
