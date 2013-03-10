@@ -7,4 +7,6 @@ RopWindow.h
 AlphaChild.h
 stdafx.h)
 
-add_executable(screenCapture ${src})
+set(res resource.h screenCapture.rc)
+
+add_executable(screenCapture WIN32 ${src} ${res})
