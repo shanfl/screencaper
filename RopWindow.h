@@ -45,7 +45,7 @@ public:
 		int cy = GetSystemMetrics(SM_CYSCREEN);
 
 		MoveWindow(CRect(0,0,cx,cy));
-		ModifyStyle(WS_VISIBLE |~WS_CAPTION | ~WS_BORDER/* WS_BORDER| WS_CAPTION*/ /*| WS_CLIPSIBLINGS*/ /*| WS_CLIPCHILDREN*/, 0);
+		//ModifyStyle(WS_VISIBLE |~WS_CAPTION | ~WS_BORDER/* WS_BORDER| WS_CAPTION*/ /*| WS_CLIPSIBLINGS*/ /*| WS_CLIPCHILDREN*/, 0);
 
 		CRect rc;
 		GetClientRect(&rc);

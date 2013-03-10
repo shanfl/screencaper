@@ -1,7 +1,6 @@
 #ifndef _ALPHA_CHILD_H_
 #define _ALPHA_CHILD_H_
 
-extern g_SavePath[1024];
 typedef CWinTraits<WS_POPUPWINDOW, WS_EX_TRANSPARENT | WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TOOLWINDOW> CListViewMarqueeTraits;
 
 class AlphaChild : public CWindowImpl<AlphaChild ,CWindow, CListViewMarqueeTraits>
@@ -37,9 +36,9 @@ public:
 	{
 
 		//CenterWindow();
-		ModifyStyle(WS_VISIBLE | WS_BORDER /*| WS_CAPTION*/ | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
-		LONG lWindowLong = ::GetWindowLong(m_hWnd, GWL_EXSTYLE) | WS_EX_LAYERED | WS_EX_NOACTIVATE;
-		::SetWindowLong(m_hWnd, GWL_EXSTYLE, lWindowLong); 
+		ModifyStyle(WS_VISIBLE | WS_BORDER | WS_CAPTION | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+		//LONG lWindowLong = ::GetWindowLong(m_hWnd, GWL_EXSTYLE) | WS_EX_LAYERED | WS_EX_NOACTIVATE;
+		//::SetWindowLong(m_hWnd, GWL_EXSTYLE, lWindowLong); 
 		/*Set alpha layer*/
 		const BYTE AlphaPercent = 200;
 
@@ -76,6 +75,7 @@ public:
 
 	LRESULT OnPaint(UINT uMsg,WPARAM wParam, LPARAM lParam,BOOL &bHandled)
 	{
+
 #if 1
 		RECT rc,rcTxt = {0,0,100,100};
 		CPaintDC dc = m_hWnd;
@@ -134,7 +134,11 @@ public:
 	{
 		mbLMouseDown = true;
 		if(meStatus == SELECT_STATUS)
+		{
 			GetCursorPos(&mPtBeg);
+			mPtEnd.x = mPtBeg.x;
+			mPtEnd.y = mPtBeg.y;
+		}
 		return 1 ;
 	}
 
@@ -171,8 +175,6 @@ public:
 	LRESULT OnLMouseBtnUp(UINT umsg,WPARAM wParam, LPARAM lParam,BOOL&bHandled)
 	{
 		mbLMouseDown = FALSE;
-		
-		//ScreenToClient(mPtEnd)
 		if(HasSelected())
 		{
 			meStatus = EDIT_STATSUS;
