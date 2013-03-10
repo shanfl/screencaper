@@ -183,7 +183,7 @@ public:
 		}
 		else
 		{
-			GetCursorPos(&mPtEnd);
+			//GetCursorPos(&mPtEnd);
 			meStatus = SELECT_STATUS;
 		}
 			
