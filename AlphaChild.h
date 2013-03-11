@@ -257,9 +257,13 @@ public:
 		if(meStatus != SELECT_STATUS)
 		{
 			CRect rcS = Convert(mPtEnd,mPtBeg);
-			if(rcS.bottom + 20 <= rc.bottom)
+			if(rcS.bottom + 23 <= rc.bottom)
 			{
-				mSavePath.SetWindowPos(HWND_TOP,rcS.left,rcS.bottom,0,0,SWP_NOSIZE);
+				mSavePath.SetWindowPos(HWND_TOP,rcS.left+1,rcS.bottom+3,0,0,SWP_NOSIZE);
+			}
+			else
+			{
+				mSavePath.SetWindowPos(HWND_TOP,rcS.left+3,rcS.top+3,0,0,SWP_NOSIZE);
 			}
 		}
 

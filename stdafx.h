@@ -20,6 +20,7 @@ extern CAppModule _Module;
 #include <atlctrls.h>
 //#include <atlmisc.h>
 #include "atlimage.h"
+//#include <atlcrack.h>
 
 //#include <GdiPlus.h>
 
